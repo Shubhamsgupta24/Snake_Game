@@ -12,7 +12,7 @@ import pygame, sys, time, random
 # Hard      ->  40
 # Harder    ->  60
 # Impossible->  120
-difficulty = 10
+difficulty = 25
 
 # Window size
 frame_size_x = 720
@@ -58,7 +58,13 @@ change_to = direction
 
 score = 0
 
-
+#wall positions
+walls = [[100,200],
+         [200,200],
+         [300,200],
+         [400,200],
+         [500,200],
+         [600,200]]
 # Game Over
 def game_over():
     my_font = pygame.font.SysFont('times new roman', 90)
@@ -143,6 +149,10 @@ while True:
 
     # GFX
     game_window.fill(black)
+
+    for wall in walls:
+        pygame.draw.rect(game_window,blue,pygame.Rect(wall[0],wall[1],10,10))
+
     for pos in snake_body:
         # Snake body
         # .draw.rect(play_surface, color, xy-coordinate)
@@ -163,6 +173,11 @@ while True:
         if snake_pos[0] == block[0] and snake_pos[1] == block[1]:
             game_over()
 
+    for wall in walls:
+        if snake_pos[0]==wall[0] and snake_pos[1]==wall[1]:
+            game_over()
+
+    
     show_score(1, white, 'consolas', 20)
     # Refresh game screen
     pygame.display.update()
