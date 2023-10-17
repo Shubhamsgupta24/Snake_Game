@@ -60,11 +60,11 @@ score = 0
 
 #wall positions
 walls = [[100,200],
-         [200,200],
-         [300,200],
-         [400,200],
+         [200,300],
+         [300,150],
+         [400,100],
          [500,200],
-         [600,200]]
+         [600,300]]
 # Game Over
 def game_over():
     my_font = pygame.font.SysFont('times new roman', 90)
@@ -157,7 +157,7 @@ while True:
         # Snake body
         # .draw.rect(play_surface, color, xy-coordinate)
         # xy-coordinate -> .Rect(x, y, size_x, size_y)
-        pygame.draw.rect(game_window, green, pygame.Rect(pos[0], pos[1], 10, 10))
+        pygame.draw.rect(game_window, blue, pygame.Rect(pos[0], pos[1], 20, 20))
 
     # Snake food
     pygame.draw.rect(game_window, white, pygame.Rect(food_pos[0], food_pos[1], 10, 10))
