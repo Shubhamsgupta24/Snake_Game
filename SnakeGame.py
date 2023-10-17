@@ -151,7 +151,7 @@ while True:
     game_window.fill(black)
 
     for wall in walls:
-        pygame.draw.rect(game_window,blue,pygame.Rect(wall[0],wall[1],20,20))
+        pygame.draw.rect(game_window,red,pygame.Rect(wall[0],wall[1],20,20))
 
     for pos in snake_body:
         # Snake body
