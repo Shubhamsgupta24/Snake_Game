@@ -59,12 +59,7 @@ change_to = direction
 score = 0
 
 #wall positions
-walls = [[100,200],
-         [200,300],
-         [300,150],
-         [400,100],
-         [500,200],
-         [600,300]]
+
 
 # Button settings
 button_font = pygame.font.SysFont('times new roman', 30)
@@ -120,7 +115,7 @@ def show_score(choice, color, font, size):
 
 # Main logic
 def main():
-    global difficulty, snake_pos, snake_body, food_pos, food_spawn, direction, change_to, score
+    global difficulty, snake_pos, snake_body, food_pos, food_spawn, direction, change_to, score,walls
 
     snake_pos = [100, 50]
     snake_body = [[100, 50], [100-10, 50], [100-(2*10), 50]]
@@ -129,7 +124,27 @@ def main():
     direction = 'RIGHT'
     change_to = direction
     score = 0
+    walls=[]
 
+    #randomly allocate walls
+    for i in range(15):
+        wall_x = random.randrange(1, (frame_size_x // 10)) * 10
+        wall_y = random.randrange(1, (frame_size_y // 10)) * 10
+        wall_width = random.randint(20, 50)  
+        wall_height = random.randint(15, 50)  
+        walls.append([wall_x, wall_y, wall_width, wall_height])
+
+    def generate_food_position():
+        while True:
+            food_x = random.randrange(1, (frame_size_x // 10)) * 10
+            food_y = random.randrange(1, (frame_size_y // 10)) * 10
+        # Check if food position overlaps with any wall
+            overlap = any(food_x == wall[0] and food_y == wall[1] for wall in walls)
+            if not overlap:
+                return food_x, food_y
+
+    food_pos = generate_food_position()
+    food_spawn = True
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -190,7 +205,7 @@ def main():
         game_window.fill(black)
 
         for wall in walls:
-            pygame.draw.rect(game_window, blue, pygame.Rect(wall[0], wall[1], 10, 10))
+            pygame.draw.rect(game_window, red, pygame.Rect(wall[0], wall[1], wall[2], wall[3]))
 
         for pos in snake_body:
             # Snake body
@@ -211,7 +226,11 @@ def main():
                 game_over()
 
         for wall in walls:
-            if snake_pos[0] == wall[0] and snake_pos[1] == wall[1]:
+            wall_x, wall_y, wall_width, wall_height = wall
+            if snake_pos[0] < wall_x + wall_width and \
+                snake_pos[0] + 10 > wall_x and \
+                snake_pos[1] < wall_y + wall_height and \
+                snake_pos[1] + 10 > wall_y:
                 game_over()
 
         show_score(1, white, 'consolas', 20)
